@@ -1,0 +1,105 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Product Details</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <h1>Product Details</h1>
+            <a href="index.html" class="back-link">Back to Homepage</a>
+        </header>
+
+        <div id="product-container">
+            <!-- Product details will be dynamically loaded here -->
+        </div>
+
+        <script>
+            // Product data list
+            const products = [
+                {
+                    id: 1,
+                    name: "img/Wireless Bluetooth Headphones.webp",
+                    price: "₱349",
+                    endorsed: "TechGuru",
+                    description: "High-quality wireless headphones with noise cancellation and 20 hours of battery life. Perfect for music lovers and professionals.",
+                    image: "img/Wireless Bluetooth Headphones.webp",
+                    buyLink: "https://shopee.ph/Lenovo-Erazer-XT89-PRO-AI-Smart-Real-Time-Translation-Bluetooth-Earphone-Tws-Game-Earphones-Noise-Canceling-Earbuds-Wireless-Earphone-HiFi-Music-HD-Call-With-Microphone-Bluetooth-5.4-Sports-Headset-Waterproof-i.733529829.27927397513"
+                },
+                {
+                    id: 2,
+                    name: "Smart Fitness Watch",
+                    price: "₱1,679",
+                    endorsed: "FitLife Experts",
+                    description: "A sleek and modern smartwatch designed to track fitness, monitor heart rate, and provide smart notifications. Ideal for health-conscious users.",
+                    image: "img/smart watch.webp",
+                    buyLink: "https://shopee.ph/-Free-Strap-Xiaomi-Redmi-Watch-5-Active-Smartwatch-2''-Display-Clear-Calling-5ATM-i.1064370388.24406461881?sp_atk=c088c88a-df44-442b-8570-e36ba777e776&xptdk=c088c88a-df44-442b-8570-e36ba777e776"
+                },
+                {
+                    id: 3,
+                    name: "Portable Blender",
+                    price: "₱263",
+                    endorsed: "KitchenPros",
+                    description: "Compact and powerful blender for smoothies and protein shakes. USB rechargeable and easy to clean.",
+                    image: "img/Portable Blender.webp",
+                    buyLink: "https://shopee.ph/Portable-Juicer-Blender-Fruit-Juice-Mixer-Rechargeable-Electric-Fruit-Juicer-Portable-Juice-Cup-i.446723446.21878452687"
+                },
+                {
+                    id: 4,
+                    name: "Wireless Charging Pad",
+                    price: "₱572",
+                    endorsed: "TechWorld",
+                    description: "A sleek and fast wireless charging pad compatible with all Qi-enabled devices.",
+                    image: "img/Wireless Charging Pad.webp",
+                    buyLink: "https://shopee.ph/PROLiNK-PQC1005-10W-Qi-Wireless-Charging-Pad-i.24135166.5051224223"
+                },
+                {
+                    id: 5,
+                    name: "Ergonomic Office Chair",
+                    price: "₱769",
+                    endorsed: "WorkSmart",
+                    description: "Comfortable and adjustable office chair with lumbar support. Perfect for home and office use.",
+                    image: "img/Ergonomic Office Chair.webp",
+                    buyLink: "https://shopee.ph/Office-Chair-Computer-Chair-Ergonomic-Chair-Chair-For-Study-Table-Mesh-Breathable-Study-Chair-i.372992222.18575850926?sp_atk=8d95da91-fb72-4805-bc7f-c516d201748d&xptdk=8d95da91-fb72-4805-bc7f-c516d201748d"
+                },
+                {
+                    id: 6,
+                    name: "Smartphone Camera Lens Kit",
+                    price: "₱720",
+                    endorsed: "PhotoPro",
+                    description: "Enhance your smartphone photography with this high-quality lens kit, including macro, wide-angle, and fisheye lenses.",
+                    image: "img/Smartphone Camera Lens Kit.webp",
+                    buyLink: "https://shopee.ph/Ringke-Camera-Styling-for-iPhone-15-Pro-Max-15-Pro-Aluminum-Frame-Camera-Lens-Protector-i.175335350.17798798386?sp_atk=46c6538f-6471-4cff-acf2-ed5609148ede&xptdk=46c6538f-6471-4cff-acf2-ed5609148ede"
+                }
+            ];
+
+            // Get the product ID from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get("id"));
+
+            // Find the product based on the ID
+            const product = products.find(p => p.id === productId);
+
+            // If product found, display it
+            if (product) {
+                document.getElementById("product-container").innerHTML = `
+                    <div class="product-detail">
+                        <img src="${product.image}" alt="${product.name}">
+                        <div class="product-info">
+                            <h2>${product.name}</h2>
+                            <p><strong>Price:</strong> ${product.price}</p>
+                            <p><strong>Endorsed by:</strong> ${product.endorsed}</p>
+                            <p><strong>Description:</strong> ${product.description}</p>
+                            <a href="${product.buyLink}" target="_blank" class="buy-now">Buy Now on Shopee</a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.getElementById("product-container").innerHTML = `<p>Product not found.</p>`;
+            }
+        </script>
+
+    </body>
+    </html>

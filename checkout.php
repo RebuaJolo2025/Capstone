@@ -19,6 +19,7 @@ $result = mysqli_query($conn, $query);
 <head>
     <meta charset="UTF-8">
     <title>Your Cart</title>
+    <link rel="stylesheet" href="style/style.css">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -67,6 +68,8 @@ $result = mysqli_query($conn, $query);
             text-align: center;
             margin-top: 20px;
             font-size: 1.2em;
+            font-weight: bold;
+            color: #2E7D32;
         }
         .checkout-btn {
             display: block;
@@ -88,6 +91,11 @@ $result = mysqli_query($conn, $query);
             text-align: center;
             font-size: 1.3em;
             color: #999;
+        }
+        .cart-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -111,8 +119,10 @@ $result = mysqli_query($conn, $query);
         }
 
         echo '<div class="totals">';
-        echo 'Total Items Selected: <span id="total-quantity">0</span><br>';
-        echo 'Total Price: ₱<span id="total-price">0.00</span>';
+        echo '<div class="cart-summary">';
+        echo '<div>Total Items Selected: <span id="total-quantity">0</span></div>';
+        echo '<div>Total Price: ₱<span id="total-price">0.00</span></div>';
+        echo '</div>';
         echo '</div>';
 
         echo '<button type="submit" class="checkout-btn">Proceed to Checkout</button>';

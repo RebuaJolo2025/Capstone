@@ -12,7 +12,7 @@ if (!isset($_SESSION['email'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your Cart</title>
+    <title>Checkout</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -59,10 +59,13 @@ if (!isset($_SESSION['email'])) {
             margin: 15px 0 5px;
             font-weight: bold;
         }
-        .totals {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 1.2em;
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
         }
 
         button[type="submit"] {
@@ -94,43 +97,54 @@ if (!isset($_SESSION['email'])) {
         .back-link:hover {
             text-decoration: underline;
         }
-        .cart-summary {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
 
-<div class="cart-container">
-    <h1>Your Shopping Cart</h1>
+<div class="checkout-container">
+<?php
+if (isset($_POST['selected_items']) && !empty($_POST['selected_items'])) {
+    $selected_items = $_POST['selected_items'];
+    $email = $_SESSION['email'];
 
-    <?php
-    if (mysqli_num_rows($result) > 0) {
-        echo '<form action="checkout.php" method="POST">';
-        while($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="cart-item">';
-            echo '<input type="checkbox" name="selected_items[]" value="' . $row["id"] . '" class="item-checkbox" data-price="' . $row["product_price"] . '">';
-            echo '<img src="' . $row["image"] . '" alt="' . $row["product_name"] . '">';
-            echo '<div class="cart-item-details">';
-            echo '<h3>' . $row["product_name"] . '</h3>';
-            echo '<p>₱' . number_format($row["product_price"], 2) . '</p>';
-            echo '</div>';
-            echo '</div>';
+    echo "<h1>Checkout Summary</h1>";
+    echo "<ul>";
+
+    $total = 0;
+
+    foreach ($selected_items as $id) {
+        $id = intval($id); // sanitize
+        $query = "SELECT * FROM cart WHERE id = $id AND email = '$email'";
+        $result = mysqli_query($conn, $query);
+
+        if ($row = mysqli_fetch_assoc($result)) {
+            echo "<li>{$row['product_name']} - ₱{$row['product_price']}</li>";
+            $total += $row['product_price'];
         }
-
-        echo '<div class="totals">';
-        echo 'Total Items Selected: <span id="total-quantity">0</span><br>';
-        echo 'Total Price: ₱<span id="total-price">0.00</span>';
-        echo '</div>';
-
-        echo '<button type="submit" class="checkout-btn">Proceed to Checkout</button>';
-        echo '</form>';
-    } else {
-        echo "<p class='empty-cart-message'>Your cart is empty.</p>";
     }
-    ?>
+
+    echo "</ul>";
+    echo "<p><strong>Total: ₱{$total}</strong></p>";
+
+    // Delivery form
+    echo '<form action="place_order.php" method="POST">';
+    foreach ($selected_items as $id) {
+        echo '<input type="hidden" name="selected_items[]" value="' . intval($id) . '">';
+    }
+    echo '<label>Delivery Address:</label>';
+    echo '<textarea name="delivery_address" required></textarea>';
+
+    echo '<label>Phone Number:</label>';
+    echo '<input type="text" name="phone" required>';
+
+    echo '<button type="submit">Place Order</button>';
+    echo '</form>';
+
+    echo '<a class="back-link" href="cart.php">← Back to Cart</a>';
+} else {
+    echo "<p>No items selected. Please go back to your <a class='back-link' href='cart.php'>cart</a>.</p>";
+}
+?>
 </div>
 
 </body>
